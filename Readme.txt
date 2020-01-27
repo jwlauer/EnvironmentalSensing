@@ -1,1 +1,0 @@
-This repository contains code intended to support the collection of environmental data.  The projects are created using MicroPython and can be run on microcontrollers such as an ESP32 or Pyboard. This site is a work in progress. 

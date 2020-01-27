@@ -1,1 +1,1 @@
-Many of the projects are part of an introductory class on data collection and analysis in Python.  The projects use microcontrollers such as the ESP32 and the MicroPython pyboard.  The site is a work in progress. 
+Many of these projects are part of an introductory class on data collection and analysis in Python.  The projects use microcontrollers such as the ESP32 and the MicroPython pyboard.  The site is a work in progress. 

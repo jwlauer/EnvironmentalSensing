@@ -11,6 +11,8 @@ import time
 import machine
 from machine import Pin
 
+initial_time = time.time()
+
 ser = machine.UART(1,baudrate=9600, rx=38, tx=39)  #RX & TX for Adafruit ESP32-S2 Feather-S2
 ser.init(9600, bits=8, parity=None, stop=1)
 
@@ -32,17 +34,18 @@ response = ser.readline()
 print('acknowledgement is:')
 print(response)
 co2 = 256*response[2]+response[3]
-print('CO2 = %s' % (co2))
+print(f'CO2 = {co2}')
 
 #enter read loop
 while True:
+    time_now = time.time()-initial_time
     ser.readline()
     written = ser.write(code_read) #assign the result to a variable so it won't print to screen
     time.sleep(5)
     try:
         response = ser.readline()
         co2 = 256*response[2]+response[3]
-        print('CO2 = %s' % (co2))
+        print(f'CO2 = {co2}')
     except:
         pass
 

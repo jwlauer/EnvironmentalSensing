@@ -67,7 +67,7 @@ while True:
     if response[0] == 64 and len(response)==8:
         PM25 = response[3]*256+response[4]
         PM10 = response[5]*256+response[6]
-        print('PM2.5 = %s; PM10 = %s' % (PM25, PM10))
+        print(f'PM2.5 = {PM25}; PM10 = {PM10}')
     else:
         time.sleep(10)
         response = ser.readline()

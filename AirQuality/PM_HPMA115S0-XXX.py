@@ -11,6 +11,8 @@ from machine import Pin
 import time    #for pausing and looping
 
 ser = machine.UART(1,baudrate=9600, rx=38, tx=39)  #RX & TX for Adafruit ESP32-S2 Feather-S2
+ser.init(9600, bits=8, parity=None, stop=1)
+
 BuiltinLED = Pin(13, Pin.OUT)
 BuiltinLED.on()
 
@@ -25,7 +27,7 @@ ser.readline()
 ser.write(code_stop_auto_send)
 time.sleep(1)
 response = ser.readline()
-print('command sent, acknowledgement is:')
+print('command sent, acknowledgment is:')
 print(response)
 
 #turn reading off -- confirm that this stopped fan
@@ -54,6 +56,8 @@ PM25 = response[3]*256+response[4]
 print('PM2.5 = ');
 print(PM25)
 PM10 = response[5]*256+response[6]
+print('PM10 = ');
+print(PM10)
 
 #enter read loop
 while True:

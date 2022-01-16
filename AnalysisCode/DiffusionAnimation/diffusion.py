@@ -37,7 +37,7 @@ T[...,columnmax] = Tright
 
 #recursively compute value of T for all other cells
 #start at row 0 and go to the next to last row
-for i in range(0,rowmax):   
+for i in range(0,rowmax+1):   
     #start at column 1 and go to the next to last column
     for m in range(1,columnmax):  
         T[i+1,m]=T[i,m]+ kappa * dt/dx**2*(T[i,m+1]-2*T[i,m]+T[i,m-1])

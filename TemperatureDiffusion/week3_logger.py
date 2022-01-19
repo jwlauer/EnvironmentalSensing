@@ -13,15 +13,16 @@ print('found devices:', roms)
 
 #format time
 t = time.localtime()
-started = f'starting at {t[0]}-{t[1]}-{t[2]} {t[3]}:{t[4]}:{t[5]} \r\n'
+#started = f'starting at {t[0]}-{t[1]}-{t[2]} {t[3]}:{t[4]}:{t[5]} \r\n'
+started = f'starting at {t[0]}-{t[1]}-{t[2]} {t[3]}:{t[4]}:{t[5]}'
 
 #format write string for header
-text_to_write = started
-text_to_write = text_to_write + 'time'
+text = started + ('\r\n')
+text = text + 'time'
 for i in range(len(roms)):
-    text_to_write = text_to_write + f',temperature{i}'
-text_to_write = text_to_write + ('\r\n')
-print(text_to_write)
+    text = text + f',temperature{i}'
+print(text)
+text_to_write = text + ('\r\n')
 
 #Write the header line
 #uncomment next line to erase the file each time you start
@@ -31,7 +32,7 @@ f.write(text_to_write)
 f.close()
 
 #set up timing
-dt = 20
+dt = 3
 initial_time = time.time()
 next_time = initial_time
 
@@ -44,12 +45,12 @@ while True:
         time.sleep_ms(750)   #wait long enough for sensors to respond
         
         #format the write string for data line
-        text_to_write = (f'{time_in_run}')
+        text = (f'{time_in_run/60}')
         for rom in roms:
             temperature = ds.read_temp(rom)
-            text_to_write = text_to_write + (f',{temperature}') 
-        text_to_write = text_to_write+('\r\n') # this is necessary to start a new line next time around
-        print(text_to_write)
+            text = text + (f',{temperature:.1f}') 
+        print(text)
+        text_to_write = text+('\r\n')
         
         #write to file
         f=open('datalog.txt','a')
@@ -57,4 +58,3 @@ while True:
         f.close()
     else:
         time.sleep(0.1)
-

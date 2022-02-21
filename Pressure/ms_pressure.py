@@ -129,7 +129,7 @@ def ms5803_05(i2c, address = 0x76, VDD_pin=None, ground_pin=None):
     if not(VDD_pin is None):
         VDD_pin.value(0)
         
-    return([pressure, cTemp])
+    return([cTemp, pressure])
     
 def ms5840_02(i2c, VDD_pin=None, ground_pin=None):
     """ Reads pressure and temperature from an MS5840_02 sensor.
@@ -186,7 +186,7 @@ def ms5840_02(i2c, VDD_pin=None, ground_pin=None):
     if not(VDD_pin is None):
         VDD_pin.value(0)
         
-    return([pressure, cTemp])
+    return([cTemp, pressure])
 
 def ms5839_02(i2c, VDD_pin=None, ground_pin=None):
     """ Reads pressure and temperature from an MS5839_02 sensor (same as MS5840_02).

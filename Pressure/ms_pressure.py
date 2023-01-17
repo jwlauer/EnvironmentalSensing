@@ -80,6 +80,58 @@ def read_uncompensated(i2c,address,VDD_pin,ground_pin):
 
     return[C1,C2,C3,C4,C5,C6,D1,D2]
 
+def ms5803_02(i2c, address = 0x76, VDD_pin=None, ground_pin=None):
+    """ Reads pressure and temperature from an MS5803_02 sensor.
+    
+    Parameters
+    ----------
+	i2c : :obj:'machine.I2C'
+		An I2C bus object
+	address : int, optional
+        I2C address of the sensor, 118 or 119.  Default is 118 (0x76).
+	VDD_pin : :obj:'machine.PIN', optional
+		Pin object representing the pin used to power the device 
+	ground_pin : :obj:'machine.PIN', optional
+		Pin object representing the pin used to ground the device
+    Returns
+    -------
+    pressure : float
+        Pressure in hPa.
+    temperature : float
+        Temperature in degrees C.
+           
+    """
+    
+    [C1,C2,C3,C4,C5,C6,D1,D2] = read_uncompensated(i2c, address, VDD_pin, ground_pin)
+
+    dT = D2 - C5 * 2**8
+    TEMP = 2000 + dT * C6 / 2**23
+    OFF = C2 * 2**17 + (C4 * dT) / 2**6
+    SENS = C1 * 2**16 + (C3 * dT ) / 2**7
+    
+    if TEMP > 2000 :
+        T2 = 0
+        OFF2 = 0
+        SENS2 = 0
+    elif TEMP < 2000 :
+        T2 = (dT * dT) / 2**31
+        OFF2 = 61 * ((TEMP - 2000) * (TEMP - 2000)) / 2**4
+        SENS2 = 2 * ((TEMP - 2000) * (TEMP - 2000)) 
+        if TEMP < -1500 :
+            OFF2 = OFF2 + 20 * (TEMP + 1500) * (TEMP + 1500)
+            SENS2 = SENS2 + 12 * ((TEMP + 1500) * (TEMP +1500))
+
+    TEMP = TEMP - T2
+    OFF = OFF - OFF2
+    SENS = SENS - SENS2
+    pressure = ((((D1 * SENS) / 2**21) - OFF) / 2**15) / 100.0
+    cTemp = TEMP / 100.0
+    
+    if not(VDD_pin is None):
+        VDD_pin.value(0)
+        
+    return([cTemp, pressure])
+
 def ms5803_05(i2c, address = 0x76, VDD_pin=None, ground_pin=None):
     """ Reads pressure and temperature from an MS5803_05 sensor.
     
@@ -130,7 +182,7 @@ def ms5803_05(i2c, address = 0x76, VDD_pin=None, ground_pin=None):
         VDD_pin.value(0)
         
     return([cTemp, pressure])
-    
+
 def ms5840_02(i2c, VDD_pin=None, ground_pin=None):
     """ Reads pressure and temperature from an MS5840_02 sensor.
     

@@ -297,7 +297,7 @@ figure6
 # In[ ]:
 
 
-get_ipython().run_line_magic('matplotlib', 'auto')
+#get_ipython().run_line_magic('matplotlib', 'auto')
 
 
 # From here on, any new figures will automatically show up both inline and in the interactive figure window.

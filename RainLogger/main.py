@@ -6,7 +6,7 @@ Released under MIT license
 This program uses an ESP32 to to post a timestamp and count to a
 Google Sheet. It is intended to run on a Feather ESP32-S2 board
 (which has a built-in connection between battery and the on-board
-LC709203F battery  monitor). It was written as a way
+LC709203F batter y  monitor). It was written as a way
 of logging the time when the bucket in a tipping bucket rain gage
 empties itself. To conserve power, the program
 spends most of its time in a deep sleep state and only wakes
